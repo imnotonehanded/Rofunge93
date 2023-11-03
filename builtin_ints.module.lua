@@ -1,38 +1,47 @@
 local util = require(script.Parent.util)
 local builtin_ints = {}
-
+-- https://esolangs.org/wiki/Befunge#Instructions what each function does relating to syntax
 function builtin_ints.bp_right(_settings, program, stack)
+	-- sets the direction to 0 
 	_settings[3] = 0
 	return _settings, program, stack
 end
 
 function builtin_ints.bp_down(_settings, program, stack)
+	-- sets the direction to 1
 	_settings[3] = 1
 	return _settings, program, stack
 end
 
 function builtin_ints.bp_left(_settings, program, stack)
+	-- sets the direction to 2
 	_settings[3] = 2
 	return _settings, program, stack
 end
 
 function builtin_ints.bp_up(_settings, program, stack)
+	-- sets the direction to 3
 	_settings[3] = 3
 	return _settings, program, stack
 end
 
 function builtin_ints.bp_str(_settings, program, stack)
+	--prints the text until exited
 	_settings = util.newpos(_settings)
+	--gets x and y
  	local char = program[_settings[5]][_settings[4]]
 	while char ~= '"' do
+		
 		util.push(stack, string.byte(char))
 		_settings = util.newpos(_settings)
+		--gets new x, y
 		char = program[_settings[5]][_settings[4]]
 	end
 	return _settings, program, stack
 end
 
 function builtin_ints.bp_dup(_settings, program, stack)
+	--checks if the length is more than 0 and then pushes the current stack to a newstack
 	if #stack > 0 then
 		util.push(stack, stack[-1])
 	else
@@ -45,6 +54,7 @@ end
 
 
 function builtin_ints.bp_hif(_settings, program, stack)
+	--sets the direction to right if no stack
 	if util.pop(stack) == 0 then
 		_settings[3] = 0
 	else
@@ -54,6 +64,7 @@ function builtin_ints.bp_hif(_settings, program, stack)
 end
 
 function builtin_ints.bp_pst(_settings, program, stack)
+	--prints the last item of stack
 	print(string.char(util.pop(stack)))
 	return _settings, program, stack
 end
